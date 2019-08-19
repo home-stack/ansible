@@ -1,0 +1,67 @@
+---
+
+
+- name: Remove firewalld
+  yum:
+    name: firewalld
+    state: absent
+  tags:
+    - home-stack.base
+
+- name: Install epel-release
+  yum:
+    name: epel-release
+    state: present
+  tags:
+    - home-stack.base
+
+- name: Install chrony
+  yum:
+    name: chrony
+    state: present
+  notify:
+    - enable chrony
+    - start chrony
+  tags:
+    - home-stack.base
+
+- name: Configure chrony
+  template:
+    src: "etc/chrony.conf.j2"
+    dest: "/etc/chrony.conf"
+  notify:
+    - restart chrony
+  tags:
+    - home-stack.base
+
+- name: Install base OpenStack {{ openstack_version }} packages
+  yum:
+    name: "centos-release-openstack-{{ openstack_version }}"
+    state: present
+  tags:
+    - home-stack.base
+
+# TODO: This may not be required nodes other than the controller node and should be moved
+- name: Install OpenStack client
+  yum:
+    name: python-openstackclient
+    state: present
+  tags:
+    - home-stack.base
+
+- name: Install all updates
+  yum:  # noqa 403
+    name: '*'
+    state: latest
+    update_only: true
+  register: updates_installed
+  tags:
+    - home-stack.base
+    - home-stack.base-install-updates
+
+# - name: Reboot if necessary
+#   reboot:  # noqa 503
+#   when: updates_installed.changed
+#   tags:
+#     - home-stack.base
+#     - home-stack.base-install-updates

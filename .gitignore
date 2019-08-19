@@ -1,0 +1,5 @@
+.home-stack-ansible
+.vagrant
+.vscode
+.yamllint
+*.pyc

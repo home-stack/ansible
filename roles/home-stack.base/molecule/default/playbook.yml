@@ -1,0 +1,15 @@
+---
+- name: Converge
+  hosts: all
+  become: yes
+  roles:
+    - role: home-stack.base
+
+- name: Configure compute1
+  hosts: compute1
+  become: yes
+  tasks:
+    - name: Configure hosts file
+      lineinfile:
+        path: "/etc/hosts"
+        line: "192.168.64.3 controller1"

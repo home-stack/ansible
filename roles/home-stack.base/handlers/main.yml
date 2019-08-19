@@ -1,0 +1,21 @@
+---
+- name: enable chrony
+  systemd:
+    name: chronyd
+    enabled: true
+  tags:
+    - always
+
+- name: start chrony
+  systemd:
+    name: chronyd
+    state: started
+  tags:
+    - always
+
+- name: restart chrony
+  systemd:
+    name: chronyd
+    state: restarted
+  tags:
+    - always
