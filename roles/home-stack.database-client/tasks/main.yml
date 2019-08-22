@@ -1,0 +1,7 @@
+---
+- name: Install database packages
+  yum:
+    name: "{{ database_packages }}"
+    state: present
+  tags:
+    - home-stack.database-server
