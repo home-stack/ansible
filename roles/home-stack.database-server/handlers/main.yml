@@ -1,0 +1,21 @@
+---
+- name: enable database
+  systemd:
+    name: mariadb
+    enabled: true
+  tags:
+    - always
+
+- name: start database
+  systemd:
+    name: mariadb
+    state: started
+  tags:
+    - always
+
+- name: restart database
+  systemd:
+    name: mariadb
+    state: restarted
+  tags:
+    - always

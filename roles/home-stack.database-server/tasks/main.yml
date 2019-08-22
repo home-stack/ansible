@@ -1,0 +1,17 @@
+---
+- name: Install database packages
+  yum:
+    name: "{{ database_packages }}"
+    state: present
+  notify:
+    - enable database
+    - start database
+  tags:
+    - home-stack.database-server
+
+- name: Configure database
+  template:
+    src: "etc/my.cnf.d/home-stack.cnf.j2"
+    dest: "/etc/my.cnf.d/home-stack.cnf"
+  tags:
+    - home-stack.database-server

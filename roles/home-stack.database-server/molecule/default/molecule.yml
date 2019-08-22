@@ -1,0 +1,36 @@
+---
+# https://github.com/jonashackt/molecule-ansible-docker-vagrant#project-structure
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+platforms:
+  - name: controller1
+    box: geerlingguy/centos7
+    memory: 1024
+    cpus: 2
+    provider_override_args:
+      - 'vm.network "private_network", ip: "192.168.64.3"'
+    groups:
+      - controller
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      compute:
+        ntp_sources:
+          - "controller1"
+  lint:
+    name: ansible-lint
+verifier:
+  name: testinfra
+  env:
+    # get rid of the DeprecationWarning messages of third-party libs,
+    # see https://docs.pytest.org/en/latest/warnings.html#deprecationwarning-and-pendingdeprecationwarning
+    PYTHONWARNINGS: "ignore:.*U.*mode is deprecated:DeprecationWarning,ignore:.*Unknown ssh.*:UserWarning"
+  lint:
+    name: flake8
