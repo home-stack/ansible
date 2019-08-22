@@ -42,9 +42,9 @@
     - home-stack.base
 
 # TODO: This may not be required nodes other than the controller node and should be moved
-- name: Install OpenStack client
+- name: Install OpenStack client and other packages
   yum:
-    name: python-openstackclient
+    name: "{{ base_packages }}"
     state: present
   tags:
     - home-stack.base

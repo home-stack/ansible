@@ -1,2 +1,4 @@
 ---
-# vars file for home-stack.base
+base_packages:
+  - python-openstackclient
+  - openstack-selinux
